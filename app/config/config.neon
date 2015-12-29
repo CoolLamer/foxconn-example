@@ -25,6 +25,7 @@ services:
 	router: App\RouterFactory::createRouter
 	- Foxconn\Repository\UserRepository
 	- Foxconn\Services\UserService
+	- Foxconn\Click\IClickComponent
 
 extensions:
     webloader: WebLoader\Nette\Extension
