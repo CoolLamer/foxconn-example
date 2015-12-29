@@ -4,6 +4,8 @@ namespace App\Presenters;
 
 use Nette;
 use App\Model;
+use WebLoader\Nette\CssLoader;
+use WebLoader\Nette\JavaScriptLoader;
 
 
 /**
@@ -11,5 +13,21 @@ use App\Model;
  */
 abstract class BasePresenter extends Nette\Application\UI\Presenter
 {
+	/**
+	 * @inject
+	 * @var \WebLoader\Nette\LoaderFactory
+	 */
+	public $webLoader;
 
+	/** @return CssLoader */
+	protected function createComponentCss()
+	{
+		return $this->webLoader->createCssLoader('default');
+	}
+
+	/** @return JavaScriptLoader */
+	protected function createComponentJs()
+	{
+		return $this->webLoader->createJavaScriptLoader('default');
+	}
 }

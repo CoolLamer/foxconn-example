@@ -1,0 +1,13 @@
+webloader:
+    css:
+        default:
+            remoteFiles:
+                - http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css
+    js:
+        default:
+            files:
+                - main.js
+            remoteFiles:
+                - http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js
+                - http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js
+                - http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js
