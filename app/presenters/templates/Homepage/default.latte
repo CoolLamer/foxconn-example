@@ -1,5 +1,5 @@
 {block content}
-<div class="container">
+<div data-pozdrav-link="{link pozdrav!}" class="container">
 
     <form class="form-signin">
         <h2 class="form-signin-heading">Please sign in</h2>
@@ -16,3 +16,10 @@
     </form>
 
 </div> <!-- /container -->
+
+{block scripts}
+    <script>
+        var Data = {};
+        Data.pozdrav = 'Ahoj';
+    </script>
+{/block}
