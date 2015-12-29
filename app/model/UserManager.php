@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use Foxconn\Repository\UserRepository;
 use Nette;
 use Nette\Security\Passwords;
 
@@ -18,14 +19,14 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
 		COLUMN_PASSWORD_HASH = 'password',
 		COLUMN_ROLE = 'role';
 
+	/**
+	 * @var UserRepository
+	 */
+	private $userRepository;
 
-	/** @var Nette\Database\Context */
-	private $database;
-
-
-	public function __construct(Nette\Database\Context $database)
+	public function __construct(UserRepository $userRepository)
 	{
-		$this->database = $database;
+		$this->userRepository = $userRepository;
 	}
 
 
@@ -38,23 +39,12 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
 	{
 		list($username, $password) = $credentials;
 
-		$row = $this->database->table(self::TABLE_NAME)->where(self::COLUMN_NAME, $username)->fetch();
-
-		if (!$row) {
-			throw new Nette\Security\AuthenticationException('The username is incorrect.', self::IDENTITY_NOT_FOUND);
-
-		} elseif (!Passwords::verify($password, $row[self::COLUMN_PASSWORD_HASH])) {
+		$result = $this->userRepository->checkPassword($username, $password);
+		if ($result === false) {
 			throw new Nette\Security\AuthenticationException('The password is incorrect.', self::INVALID_CREDENTIAL);
-
-		} elseif (Passwords::needsRehash($row[self::COLUMN_PASSWORD_HASH])) {
-			$row->update(array(
-				self::COLUMN_PASSWORD_HASH => Passwords::hash($password),
-			));
 		}
 
-		$arr = $row->toArray();
-		unset($arr[self::COLUMN_PASSWORD_HASH]);
-		return new Nette\Security\Identity($row[self::COLUMN_ID], $row[self::COLUMN_ROLE], $arr);
+		return new Nette\Security\Identity($result->userName);
 	}
 
 
@@ -79,6 +69,6 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
 }
 
 
-
 class DuplicateNameException extends \Exception
-{}
+{
+}

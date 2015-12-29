@@ -23,6 +23,8 @@ services:
 	- App\Model\UserManager
 	- App\Forms\SignFormFactory
 	router: App\RouterFactory::createRouter
+	- Foxconn\Repository\UserRepository
+	- Foxconn\Services\UserService
 
 extensions:
     webloader: WebLoader\Nette\Extension
